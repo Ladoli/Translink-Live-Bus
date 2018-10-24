@@ -10,7 +10,7 @@ app.use( bodyParser.json() );
 app.use(cors());
 
 
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 
 

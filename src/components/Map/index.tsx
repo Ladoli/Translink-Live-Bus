@@ -4,7 +4,7 @@ import { isEmpty, map } from 'lodash';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import ReactMapGL,{ Marker } from 'react-map-gl';
-import { BUS_REFRESH_INTERVAL, MAPBOX_TOKEN  } from '../../config/config.js';
+import { BUS_REFRESH_INTERVAL, MAPBOX_TOKEN, NODE_API_LINK } from '../../config/config.js';
 import { busStore } from '../../store/busStore';
 import './map.css';
 import mapStyleJson from './mapStyle.js';
@@ -40,7 +40,7 @@ class Map extends React.Component<{}, State> {
     }
 
     public getBusData(){
-      axios.get("http://localhost:5000", {
+      axios.get(NODE_API_LINK, {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
