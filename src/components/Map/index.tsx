@@ -92,7 +92,14 @@ class Map extends React.Component<{}, State> {
         const busList = this.injected.busStore.getBusList;
         const { viewport } = this.state;
         if(isEmpty(busList)){
-          return <div>Loading</div>
+          return (
+            <div style={{width: "100%",textAlign: "center", paddingTop: "10%"}}>
+              <div style={{display: "inline-block"}}>
+                <div className="viLoader"/>
+                <h1 className="fader">Loading...</h1>
+              </div>
+            </div>
+          )
         }
 
         return (

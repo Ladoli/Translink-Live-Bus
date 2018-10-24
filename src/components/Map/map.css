@@ -5,3 +5,48 @@
   background-color: black;
   border-radius: 50%;
 }
+
+.viLoader {
+	display: inline-block;
+  border:  solid transparent;
+  border-radius: 50%;
+  border-top: 2vw solid transparent;
+  border-left:  2vw solid transparent;
+	border-right: 2vw solid rgb(50, 255, 255);
+  border-bottom: 2vw solid rgb(0, 255, 255);
+  width: 30vw;
+  height: 30vw;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); opacity: .3}
+	50% { opacity: 1}
+  100% { transform: rotate(360deg); opacity: .3}
+}
+
+
+.fader{
+  animation: fadeInOut 2s infinite;
+  -webkit-animation: fadeInOut 2s infinite; /* Safari */
+  margin-top: 40px;
+  margin-bottom: 30%;
+}
+
+@-webkit-keyframes fadeInOut {
+  0% { opacity: .1}
+  60% { opacity: .9}
+  100% { opacity: .1}
+}
+
+@keyframes fadeInOut {
+  0% { opacity: .1}
+  60% { opacity: .9}
+  100% { opacity: .1}
+}
