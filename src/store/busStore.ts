@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, computed, observable } from 'mobx';
 
 interface Bus {
   Destination: string
@@ -15,11 +15,16 @@ interface Bus {
 
 class BusStore {
    @observable
-   public busList: Bus[] = []
+   public busList: Bus[] = [];
 
    @action
    public setBusList(newBusList: Bus[]) {
      this.busList = newBusList;
+   }
+
+   @computed
+   public get getBusList(){
+     return this.busList;
    }
 
 }

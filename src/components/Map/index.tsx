@@ -1,9 +1,11 @@
 import axios from 'axios';
 import {fromJS} from 'immutable';
 import { isEmpty, map } from 'lodash';
+import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import ReactMapGL,{ Marker } from 'react-map-gl';
-import { MAPBOX_TOKEN } from '../../config/api_keys.js';
+import { BUS_REFRESH_INTERVAL, MAPBOX_TOKEN  } from '../../config/config.js';
+import { busStore } from '../../store/busStore';
 import './map.css';
 import mapStyleJson from './mapStyle.js';
 
@@ -20,23 +22,24 @@ const initialState = {
     busses: [{Latitude: 0, Longitude: 0}]
 };
 
-
+interface InjectedProps {
+  busStore: typeof busStore
+}
 
 type State = typeof initialState;
 type Viewport = typeof initialState.viewport;
 
-export default class Map extends React.Component<{}, State> {
+@inject("busStore")
+@observer
+class Map extends React.Component<{}, State> {
     public state: State = initialState;
 
     public interval:any;
-
-    constructor(props?: any, context?: any) {
-      super(props, context);
+    get injected() {
+      return this.props as InjectedProps;
     }
 
-
     public getBusData(){
-      const that = this;
       axios.get("http://localhost:5000", {
         headers: {
           'Accept': 'application/json',
@@ -44,7 +47,7 @@ export default class Map extends React.Component<{}, State> {
         }
       })
       .then(res => {
-        that.setState({"busses": res.data});
+        this.injected.busStore.setBusList(res.data);
       })
       .catch(err => {
         console.log(err);
@@ -59,7 +62,7 @@ export default class Map extends React.Component<{}, State> {
       const that = this;
       this.interval = setInterval(() => {
         that.getBusData()
-      }, 5000);
+      }, BUS_REFRESH_INTERVAL);
       window.addEventListener('resize', this.resize);
       this.resize();
     }
@@ -86,10 +89,9 @@ export default class Map extends React.Component<{}, State> {
     };
 
     public render() {
-        console.log(this)
-
+        const busList = this.injected.busStore.getBusList;
         const { viewport } = this.state;
-        if(isEmpty(this.state.busses)){
+        if(isEmpty(busList)){
           return <div>Loading</div>
         }
 
@@ -101,7 +103,7 @@ export default class Map extends React.Component<{}, State> {
                 mapStyle={mapStyle}
             >
             {
-              map(this.state.busses,(value,key)=>{
+              map(busList,(value,key)=>{
                     return (<Marker key={key} latitude={value.Latitude} longitude={value.Longitude}>
                       <div className="marker"/>
                     </Marker>);
@@ -111,3 +113,5 @@ export default class Map extends React.Component<{}, State> {
         );
     }
 }
+
+export default Map;
