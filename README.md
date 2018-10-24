@@ -5,6 +5,8 @@ This Web App displays Translink bus locations across Vancouver. It updates Bus l
 ## Deployed Website
 http://ladoli-translink.netlify.com
 
+There may be a delay initially loading the site due to using Heroku as a backend.
+
 # Questions
 ## What new technologies did you learn to complete this challenge?
 I've touched upon MobX, mobx-react, Axios on server side (Node.js), react-map-gl, TypeScript, DefinitelyTyped, Learned how to deploy Node.js to Heroku, Learned differences of using Yarn to deploy to Netlify... and refreshed myself on the problem of CORS.
