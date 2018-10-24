@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Map from './components/Map';
+// import { Provider } from 'mobx-react'
 
 // import logo from './logo.svg';
 
@@ -8,7 +9,9 @@ class App extends React.Component {
 
   public render() {
     return (
-       <Map />
+      // <Provider>
+        <Map />
+      // </Provider>
     );
   }
 }

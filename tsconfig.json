@@ -2,8 +2,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "build/dist",
-    "module": "esnext",
-    "target": "es5",
+    "module": "commonjs",
+    "target": "es6",
     "lib": ["es6", "dom"],
     "sourceMap": true,
     "allowJs": true,
@@ -17,10 +17,13 @@
     "importHelpers": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "resolveJsonModule": true,
+    "experimentalDecorators": true
   },
   "exclude": [
     "node_modules",
+    "node_server",
     "build",
     "scripts",
     "acceptance-tests",

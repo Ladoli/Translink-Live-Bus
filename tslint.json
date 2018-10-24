@@ -8,6 +8,12 @@
     ]
   },
   "rules": {
-    "jsx-no-lambda": false
+    "jsx-no-lambda": false,
+    "object-literal-sort-keys": false,
+    "interface-name" : [true, "never-prefix"],
+    "no-console": false
+  },
+  "jsRules": {
+    "object-literal-sort-keys": false
   }
 }
