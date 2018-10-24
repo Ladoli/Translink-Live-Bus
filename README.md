@@ -7,9 +7,7 @@ http://ladoli-translink.netlify.com
 
 # Questions
 ## What new technologies did you learn to complete this challenge?
-I've touched upon MobX, mobx-react, Axios on server side (Node.js), react-map-gl, TypeScript, DefinitelyTyped, Learned how to deploy Node.js to Heroku
-Refreshed myself on the problem of CORS.
+I've touched upon MobX, mobx-react, Axios on server side (Node.js), react-map-gl, TypeScript, DefinitelyTyped, Learned how to deploy Node.js to Heroku, Learned differences of using Yarn to deploy to Netlify... and refreshed myself on the problem of CORS.
 
 ## Was there anything you found specifically challenging or time consuming?
-Fixing issues and getting familiar with TypeScript, Getting Translink API to work (due to CORS), MobX inject issues with mobx-react
-Had some difficulties using Yarn with Netlify deployment. Had to re-add packages.
+Fixing issues and getting familiar with TypeScript took most of my time along with getting Translink API to work (due to CORS). MobX also had inject issues with mobx-react. I also had some difficulties using Yarn with Netlify deployment.
