@@ -5,6 +5,7 @@
   "dependencies": {
     "@types/lodash": "^4.14.117",
     "@types/react-map-gl": "^3.3.3",
+    "axios": "^0.18.0",
     "immutable": "^3.8.2",
     "lodash": "^4.17.11",
     "mobx": "^5.5.2",
