@@ -1,17 +1,16 @@
+import { Provider } from 'mobx-react'
 import * as React from 'react';
 import Map from './components/Map';
-// import { Provider } from 'mobx-react'
-
-// import logo from './logo.svg';
+import { busStore } from './store/busStore';
 
 class App extends React.Component {
 
 
   public render() {
     return (
-      // <Provider>
+      <Provider busStore={busStore}>
         <Map />
-      // </Provider>
+      </Provider>
     );
   }
 }

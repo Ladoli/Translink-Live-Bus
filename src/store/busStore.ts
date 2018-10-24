@@ -1,8 +1,16 @@
-import { action, observable } from 'mobx'
+import { action, observable } from 'mobx';
 
 interface Bus {
-  latitude: number
-  longitude: number
+  Destination: string
+  Direction: string
+  Latitude: number
+  Longitude: number
+  Pattern: string
+  RecordedTime: string
+  RouteMap: {Href: string}
+  RouteNo: string
+  TripId: number
+  VehicleNo: string
 }
 
 class BusStore {
@@ -10,8 +18,8 @@ class BusStore {
    public busList: Bus[] = []
 
    @action
-   public addBus(latitude: number, longitude: number) {
-     this.busList.push({ latitude, longitude })
+   public setBusList(newBusList: Bus[]) {
+     this.busList = newBusList;
    }
 
 }

@@ -30,6 +30,10 @@ export default class Map extends React.Component<{}, State> {
 
     public interval:any;
 
+    constructor(props?: any, context?: any) {
+      super(props, context);
+    }
+
 
     public getBusData(){
       const that = this;
@@ -82,8 +86,9 @@ export default class Map extends React.Component<{}, State> {
     };
 
     public render() {
-        const { viewport } = this.state;
+        console.log(this)
 
+        const { viewport } = this.state;
         if(isEmpty(this.state.busses)){
           return <div>Loading</div>
         }
