@@ -25,7 +25,8 @@ const initialState = {
     filteredRoute: "",
     filterRouteInputField: "",
     errorMessages: "",
-    location: {Latitude: 0, Longitude: 0}
+    location: {Latitude: 0, Longitude: 0},
+    filtering: false
 };
 
 interface InjectedProps {
@@ -47,8 +48,8 @@ class Map extends React.Component<{}, State> {
 
     public getBusData(){
       let routeFilter = "";
-      if(this.state.filteredRoute){
-        routeFilter = "?route="+this.state.filteredRoute;
+      if(this.state.filterRouteInputField){
+        routeFilter = "?route="+this.state.filterRouteInputField;
       }
       axios.get(NODE_API_LINK + routeFilter, {
         headers: {
@@ -60,8 +61,13 @@ class Map extends React.Component<{}, State> {
         if(res.data.Code){
           this.setState({errorMessages: res.data.Message});
         }else{
-          this.injected.busStore.setBusList(res.data);
-          this.setState({errorMessages: ""});
+          if(res.data.query === this.state.filteredRoute){
+            this.injected.busStore.setBusList(res.data.busList);
+            this.setState({
+              errorMessages: "",
+              filtering: false
+            });
+          }
         }
       })
       .catch(err => {
@@ -124,14 +130,14 @@ class Map extends React.Component<{}, State> {
 
     public render() {
         const busList = this.injected.busStore.getBusList;
-        const { viewport, errorMessages, busRouteDisplayed, filterRouteInputField, location } = this.state;
+        const { viewport, errorMessages, busRouteDisplayed, filterRouteInputField, location, filtering } = this.state;
         if(isEmpty(busList)){
           return (
             <div style={{width: "100%",textAlign: "center", paddingTop: "10%"}}>
 
               <Toast message="Loading taking a while? Our Heroku Node Server is probably waking up!" />
 
-              <div style={{display: "inline-block"}}>
+              <div style={{display: "inline-block", marginTop: "80px"}}>
                 <div className="viLoader"/>
                 <h1 className="fader">Loading...</h1>
               </div>
@@ -174,23 +180,34 @@ class Map extends React.Component<{}, State> {
                 <Toast message={errorMessages} error={true}/>
               )
             }
+            {
+              filtering && (
+                <div style={{display: "inline-block", top: "80px", position: "fixed", width: "100%", textAlign: "center"}}>
+                  <div className="viLoader"/>
+                  <h1 className="fader">Loading...</h1>
+                </div>
+              )
+            }
             <div className="mapOptionsControlBar">
               <div className="flexCenterAll" style={{width:"100%", height: "100%"}}>
                 <div>
-                <Button onClick={this.toggleBusRoute} compact={true} color="blue" className="mapMenuItem">Toggle Bus Route Display</Button>
-                <div className="mapMenuItem">
-                  <Input className="mapMenuItem"
-                         focus={true}
-                         placeholder='Filter by Bus Route'
-                         onChange={(e, data)=>{
-                           this.setState({filterRouteInputField: e.target.value})
-                         }}/>
-                    <Icon className="fieldIcon" name='search' onClick={()=>{
-                      this.setState({filteredRoute: filterRouteInputField});
-                      this.getBusData();
-                    }
-                    }/>
-                </div>
+                  <Button onClick={this.toggleBusRoute} compact={true} color="blue" className="mapMenuItem">Toggle Bus Route Display</Button>
+                  <div className="mapMenuItem">
+                    <Input className="mapMenuItem"
+                           focus={true}
+                           placeholder='Filter by Bus Route'
+                           onChange={(e, data)=>{
+                             this.setState({filterRouteInputField: e.target.value})
+                           }}/>
+                      <Icon className="fieldIcon" name='search' onClick={()=>{
+                        this.setState({
+                          filteredRoute: filterRouteInputField,
+                          "filtering": true
+                        });
+                        this.getBusData();
+                      }
+                      }/>
+                  </div>
                 </div>
               </div>
             </div>

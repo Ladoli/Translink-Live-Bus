@@ -28,8 +28,10 @@ app.get('/', getBussesFromTransLink);
 
 function getBussesFromTransLink(req, response) {
   let routesFilter = "";
+  let route = "";
   if(req && req.query && req.query.route){
-    routesFilter = "&routeNo="+req.query.route;
+    route = req.query.route;
+    routesFilter = "&routeNo="+route;
   }
   axios.get("https://api.translink.ca/rttiapi/v1/buses?apikey=tkODCAj46hdAoH9XO9Ml" + routesFilter, {
     headers: {
@@ -38,7 +40,10 @@ function getBussesFromTransLink(req, response) {
     }
   })
   .then(res => {
-    response.send(res.data);
+    response.send({
+      busList: res.data,
+      query: route
+    });
   })
   .catch(err => {
     response.send(err.response.data);
