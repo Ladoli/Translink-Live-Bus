@@ -163,8 +163,7 @@ class Map extends React.Component<{}, State> {
               location && (
                 <Marker latitude={location.Latitude} longitude={location.Longitude}>
                   <div className="locationMarkerEmphasis flexCenterAll">
-                    <div className="locationMarker">
-                    </div>
+                    <div className="locationMarker"/>
                   </div>
                 </Marker>
               )
