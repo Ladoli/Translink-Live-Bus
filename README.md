@@ -13,3 +13,7 @@ I've touched upon MobX, mobx-react, Axios on server side (Node.js), react-map-gl
 
 ## Was there anything you found specifically challenging or time consuming?
 Fixing issues and getting familiar with TypeScript took most of my time along with getting Translink API to work (due to CORS). MobX also had inject issues with mobx-react. I also had some difficulties using Yarn with Netlify deployment. There is also an odd production only bug (May have to do with Netlify) that would cut my location label from the first letter. This minor bug is the only one I was not able to fix.
+
+
+# Disclaimer:
+Some of the data used in this product or service is provided by permission of TransLink. TransLink assumes no responsibility for the accuracy or currency of the Data used in this product or service.
