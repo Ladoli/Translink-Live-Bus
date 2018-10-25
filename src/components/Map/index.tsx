@@ -165,7 +165,7 @@ class Map extends React.Component<{}, State> {
                   <div className="locationMarkerEmphasis flexCenterAll">
                     <div className="locationMarker">
                       <div className="locationMarkerLabel">
-                        Location
+                        YOU ARE HERE
                       </div>
                     </div>
                   </div>
