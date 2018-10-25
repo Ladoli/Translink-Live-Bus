@@ -7,9 +7,9 @@ import ReactMapGL,{ Marker } from 'react-map-gl';
 import { Button, Icon, Input } from 'semantic-ui-react';
 import { BUS_REFRESH_INTERVAL, MAPBOX_TOKEN, NODE_API_LINK } from '../../config/config.js';
 import { busStore } from '../../store/busStore';
+import Toast from '../Toast';
 import './map.css';
 import mapStyleJson from './mapStyle.js';
-
 const mapStyle = fromJS(mapStyleJson);
 
 const initialState = {
@@ -115,10 +115,13 @@ class Map extends React.Component<{}, State> {
 
     public render() {
         const busList = this.injected.busStore.getBusList;
-        const { viewport } = this.state;
+        const { viewport, errorMessages, busRouteDisplayed, filterRouteInputField } = this.state;
         if(isEmpty(busList)){
           return (
             <div style={{width: "100%",textAlign: "center", paddingTop: "10%"}}>
+
+              <Toast message="Loading taking a while? Our Heroku Node Server is probably waking up!" />
+
               <div style={{display: "inline-block"}}>
                 <div className="viLoader"/>
                 <h1 className="fader">Loading...</h1>
@@ -139,7 +142,7 @@ class Map extends React.Component<{}, State> {
               map(busList,(value,key)=>{
                     return (<Marker key={key} latitude={value.Latitude} longitude={value.Longitude}>
                       <div className="marker">
-                        { this.state.busRouteDisplayed && (
+                        { busRouteDisplayed && (
                           <div className="markerBusInfo">{value.RouteNo}</div>
                           )
                         }
@@ -149,12 +152,9 @@ class Map extends React.Component<{}, State> {
             }
             </ReactMapGL>
             {
-              !isEmpty(this.state.errorMessages) && (
-              <div className="errorToastMessages">
-                <div className="flexCenterAll" style={{width:"100%", height: "100%"}}>
-                  {this.state.errorMessages}
-                </div>
-              </div> )
+              !isEmpty(errorMessages) && (
+                <Toast message={errorMessages} error={true}/>
+              )
             }
             <div className="mapOptionsControlBar">
               <div className="flexCenterAll" style={{width:"100%", height: "100%"}}>
@@ -168,7 +168,7 @@ class Map extends React.Component<{}, State> {
                            this.setState({filterRouteInputField: e.target.value})
                          }}/>
                     <Icon className="fieldIcon" name='search' onClick={()=>{
-                      this.setState({filteredRoute: this.state.filterRouteInputField});
+                      this.setState({filteredRoute: filterRouteInputField});
                       this.getBusData();
                     }
                     }/>
