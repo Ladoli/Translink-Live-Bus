@@ -24,7 +24,8 @@ const initialState = {
     busRouteDisplayed: false,
     filteredRoute: "",
     filterRouteInputField: "",
-    errorMessages: ""
+    errorMessages: "",
+    location: {Latitude: 0, Longitude: 0}
 };
 
 interface InjectedProps {
@@ -73,6 +74,14 @@ class Map extends React.Component<{}, State> {
       this.toggleBusRoute = this.toggleBusRoute.bind(this);
       this.getBusData = this.getBusData.bind(this);
       this.getBusData();
+      const that = this;
+      if (navigator.geolocation) {
+          navigator.geolocation.watchPosition((position)=>{
+            that.setState({
+              location: {Latitude: position.coords.latitude, Longitude: position.coords.longitude}
+            })
+          });
+      }
     }
 
     public componentDidMount() {
@@ -115,7 +124,7 @@ class Map extends React.Component<{}, State> {
 
     public render() {
         const busList = this.injected.busStore.getBusList;
-        const { viewport, errorMessages, busRouteDisplayed, filterRouteInputField } = this.state;
+        const { viewport, errorMessages, busRouteDisplayed, filterRouteInputField, location } = this.state;
         if(isEmpty(busList)){
           return (
             <div style={{width: "100%",textAlign: "center", paddingTop: "10%"}}>
@@ -149,6 +158,17 @@ class Map extends React.Component<{}, State> {
                       </div>
                     </Marker>);
                 })
+            }
+            {
+              location && (
+                <Marker latitude={location.Latitude} longitude={location.Longitude}>
+                  <div className="locationMarkerEmphasis flexCenterAll">
+                    <div className="locationMarker">
+                    <div className="locationMarkerLabel">You are here</div>
+                    </div>
+                  </div>
+                </Marker>
+              )
             }
             </ReactMapGL>
             {

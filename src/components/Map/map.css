@@ -2,10 +2,48 @@
   text-align: center;
   height: 6px;
   width: 6px;
-  background-color: blue;
+  background-color: red;
   border-radius: 50%;
   position: relative;
 }
+
+.locationMarker{
+  text-align: center;
+  height: 16px;
+  width: 16px;
+  background-color: rgb(30, 120, 255);
+  border-radius: 50%;
+  position: relative;
+}
+
+.locationMarkerEmphasis{
+  text-align: center;
+  height: 170px;
+  width: 170px;
+  margin-left: -77px;
+  margin-top: -77px;
+  background-color: rgba(100, 149, 255,.4);
+  border-radius: 50%;
+  position: relative;
+}
+
+.locationMarkerLabel{
+  width: 90px;
+  font-size: 10px;
+  background-color: transparent;
+  color: black;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -45px;
+  margin-bottom: 17px;
+  font-size: 15px;
+}
+
 
 .markerBusInfo{
   width: 20px;
