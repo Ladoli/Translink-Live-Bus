@@ -21,13 +21,17 @@ app.listen(port, () => {
 });
 
 
-app.get('/', getFromTransLink);
+app.get('/', getBussesFromTransLink);
 
 
 
 
-function getFromTransLink(req, response) {
-  axios.get("https://api.translink.ca/rttiapi/v1/buses?apikey=tkODCAj46hdAoH9XO9Ml", {
+function getBussesFromTransLink(req, response) {
+  let routesFilter = "";
+  if(req && req.query && req.query.route){
+    routesFilter = "&routeNo="+req.query.route;
+  }
+  axios.get("https://api.translink.ca/rttiapi/v1/buses?apikey=tkODCAj46hdAoH9XO9Ml" + routesFilter, {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
@@ -37,9 +41,6 @@ function getFromTransLink(req, response) {
     response.send(res.data);
   })
   .catch(err => {
-    console.log(err);
+    response.send(err.response.data);
   });
-
-
-
 }

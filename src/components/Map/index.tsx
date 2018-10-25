@@ -4,7 +4,7 @@ import { isEmpty, map } from 'lodash';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import ReactMapGL,{ Marker } from 'react-map-gl';
-import { Button } from 'semantic-ui-react';
+import { Button, Icon, Input } from 'semantic-ui-react';
 import { BUS_REFRESH_INTERVAL, MAPBOX_TOKEN, NODE_API_LINK } from '../../config/config.js';
 import { busStore } from '../../store/busStore';
 import './map.css';
@@ -21,7 +21,10 @@ const initialState = {
         zoom: 11,
     },
     busses: [{Latitude: 0, Longitude: 0}],
-    busRouteDisplayed: true
+    busRouteDisplayed: false,
+    filteredRoute: "",
+    filterRouteInputField: "",
+    errorMessages: ""
 };
 
 interface InjectedProps {
@@ -42,21 +45,33 @@ class Map extends React.Component<{}, State> {
     }
 
     public getBusData(){
-      axios.get(NODE_API_LINK, {
+      let routeFilter = "";
+      if(this.state.filteredRoute){
+        routeFilter = "?route="+this.state.filteredRoute;
+      }
+      axios.get(NODE_API_LINK + routeFilter, {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         }
       })
       .then(res => {
-        this.injected.busStore.setBusList(res.data);
+        if(res.data.Code){
+          this.setState({errorMessages: res.data.Message});
+        }else{
+          this.injected.busStore.setBusList(res.data);
+          this.setState({errorMessages: ""});
+        }
       })
       .catch(err => {
         console.log(err);
       });
+
     }
 
     public componentWillMount() {
+      this.toggleBusRoute = this.toggleBusRoute.bind(this);
+      this.getBusData = this.getBusData.bind(this);
       this.getBusData();
     }
 
@@ -99,7 +114,6 @@ class Map extends React.Component<{}, State> {
     }
 
     public render() {
-        this.toggleBusRoute = this.toggleBusRoute.bind(this);
         const busList = this.injected.busStore.getBusList;
         const { viewport } = this.state;
         if(isEmpty(busList)){
@@ -134,9 +148,32 @@ class Map extends React.Component<{}, State> {
                 })
             }
             </ReactMapGL>
+            {
+              !isEmpty(this.state.errorMessages) && (
+              <div className="errorToastMessages">
+                <div className="flexCenterAll" style={{width:"100%", height: "100%"}}>
+                  {this.state.errorMessages}
+                </div>
+              </div> )
+            }
             <div className="mapOptionsControlBar">
               <div className="flexCenterAll" style={{width:"100%", height: "100%"}}>
-                <Button onClick={this.toggleBusRoute} compact={true} color="blue" className="mapMenuButton">Toggle Bus Route Display</Button>
+                <div>
+                <Button onClick={this.toggleBusRoute} compact={true} color="blue" className="mapMenuItem">Toggle Bus Route Display</Button>
+                <div className="mapMenuItem">
+                  <Input className="mapMenuItem"
+                         focus={true}
+                         placeholder='Filter by Bus Route'
+                         onChange={(e, data)=>{
+                           this.setState({filterRouteInputField: e.target.value})
+                         }}/>
+                    <Icon className="fieldIcon" name='search' onClick={()=>{
+                      this.setState({filteredRoute: this.state.filterRouteInputField});
+                      this.getBusData();
+                    }
+                    }/>
+                </div>
+                </div>
               </div>
             </div>
           </div>
