@@ -164,9 +164,6 @@ class Map extends React.Component<{}, State> {
                 <Marker latitude={location.Latitude} longitude={location.Longitude}>
                   <div className="locationMarkerEmphasis flexCenterAll">
                     <div className="locationMarker">
-                      <div className="locationMarkerLabel">
-                        YOU ARE HERE
-                      </div>
                     </div>
                   </div>
                 </Marker>
