@@ -133,7 +133,7 @@ class Map extends React.Component<{}, State> {
         const { viewport, errorMessages, busRouteDisplayed, filterRouteInputField, location, filtering } = this.state;
         if(isEmpty(busList)){
           return (
-            <div style={{width: "100%",textAlign: "center", paddingTop: "10%"}}>
+            <div style={{width: "100%",textAlign: "center", paddingTop: "90px"}}>
 
               <Toast message="Loading taking a while? Our Heroku Node Server is probably waking up!" />
 
@@ -144,37 +144,38 @@ class Map extends React.Component<{}, State> {
             </div>
           )
         }
-
         return (
           <div>
-            <ReactMapGL
-                {...viewport}
-                mapboxApiAccessToken={MAPBOX_TOKEN}
-                onViewportChange={(v: Viewport) => this.updateViewport(v)}
-                mapStyle={mapStyle}
-            >
-            {
-              map(busList,(value,key)=>{
-                    return (<Marker key={key} latitude={value.Latitude} longitude={value.Longitude}>
-                      <div className="marker">
-                        { busRouteDisplayed && (
-                          <div className="markerBusInfo">{value.RouteNo}</div>
-                          )
-                        }
-                      </div>
-                    </Marker>);
-                })
-            }
-            {
-              location && (
-                <Marker latitude={location.Latitude} longitude={location.Longitude}>
-                  <div className="locationMarkerEmphasis flexCenterAll">
-                    <div className="locationMarker"/>
-                  </div>
-                </Marker>
-              )
-            }
-            </ReactMapGL>
+            <div className="mapContainer">
+              <ReactMapGL
+                  {...viewport}
+                  mapboxApiAccessToken={MAPBOX_TOKEN}
+                  onViewportChange={(v: Viewport) => this.updateViewport(v)}
+                  mapStyle={mapStyle}
+              >
+              {
+                map(busList,(value,key)=>{
+                      return (<Marker key={key} latitude={value.Latitude} longitude={value.Longitude}>
+                        <div className="marker">
+                          { busRouteDisplayed && (
+                            <div className="markerBusInfo">{value.RouteNo}</div>
+                            )
+                          }
+                        </div>
+                      </Marker>);
+                  })
+              }
+              {
+                location && (
+                  <Marker latitude={location.Latitude} longitude={location.Longitude}>
+                    <div className="locationMarkerEmphasis flexCenterAll">
+                      <div className="locationMarker"/>
+                    </div>
+                  </Marker>
+                )
+              }
+              </ReactMapGL>
+            </div>
             {
               !isEmpty(errorMessages) && (
                 <Toast message={errorMessages} error={true}/>
@@ -182,7 +183,7 @@ class Map extends React.Component<{}, State> {
             }
             {
               filtering && (
-                <div style={{display: "inline-block", top: "80px", position: "fixed", width: "100%", textAlign: "center"}}>
+                <div style={{display: "inline-block", top: "90px", position: "fixed", width: "100%", textAlign: "center"}}>
                   <div className="viLoader"/>
                   <h1 className="fader">Loading...</h1>
                 </div>
@@ -193,26 +194,33 @@ class Map extends React.Component<{}, State> {
                 <div>
                   <Button onClick={this.toggleBusRoute} compact={true} color="blue" className="mapMenuItem">Toggle Bus Route Display</Button>
                   <div className="mapMenuItem">
-                    <Input className="mapMenuItem"
-                           focus={true}
-                           placeholder='Filter by Bus Route'
-                           onChange={(e, data)=>{
-                             this.setState({filterRouteInputField: e.target.value})
-                           }}/>
-                      <Icon className="fieldIcon" name='search' onClick={()=>{
+                    <Input
+                      className="mapMenuItem"
+                      focus={true}
+                      placeholder='Filter by Bus Route'
+                      onChange={(e)=>{
+                        this.setState({filterRouteInputField: e.target.value})
+                      }}
+                      value={this.state.filterRouteInputField}
+                     />
+                    <Button
+                      className="iconButton"
+                      color='green'
+                      onClick={()=>{
                         this.setState({
                           filteredRoute: filterRouteInputField,
                           "filtering": true
                         });
                         this.getBusData();
                       }
-                      }/>
+                      }>
+                      <Icon className="fieldIcon" name='search' />
+                    </Button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
         );
     }
 }
