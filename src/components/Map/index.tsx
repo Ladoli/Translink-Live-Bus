@@ -152,6 +152,7 @@ class Map extends React.Component<{}, State> {
                   mapboxApiAccessToken={MAPBOX_TOKEN}
                   onViewportChange={(v: Viewport) => this.updateViewport(v)}
                   mapStyle={mapStyle}
+                  className="displayMap"
               >
               {
                 map(busList,(value,key)=>{

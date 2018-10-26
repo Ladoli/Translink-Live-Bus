@@ -12,8 +12,10 @@
 }
 
 .toastMessages *{
-  -webkit-backface-visibility: hidden;
-  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden !important;
+  -webkit-transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+  transform: translateZ(0) !important;
 }
 
 .errorToastMessages{
